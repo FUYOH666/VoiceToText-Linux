@@ -1,0 +1,32 @@
+# Git files
+.git
+.gitignore
+.github
+
+# Documentation (not needed in container)
+*.md
+docs/
+
+# Development files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*.log
+*~
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Recordings
+recordings/
+*.wav
+
+# Docker files (avoid recursion)
+Dockerfile
+docker-compose.yml
+.dockerignore

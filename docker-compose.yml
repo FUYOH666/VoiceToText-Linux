@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  voicetotext-linux:
+    build: .
+    container_name: voicetotext-linux
+    volumes:
+      # Mount host audio devices (Linux only)
+      - /dev/snd:/dev/snd
+      # Mount X11 for GUI notifications (Linux only)
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /home/$USER/.Xauthority:/root/.Xauthority
+      # Mount user directory for clipboard access
+      - /home/$USER:/host_home
+      # Persistent storage for recordings
+      - ./recordings:/tmp/whisper-recordings
+      # Optional: mount custom models
+      - ./models:/app/whisper.cpp/models/custom
+    environment:
+      - DISPLAY=$DISPLAY
+      - XAUTHORITY=/root/.Xauthority
+      - PULSE_SERVER=unix:/tmp/pulseaudio.socket
+    devices:
+      - /dev/snd
+    network_mode: host
+    # For audio access (optional)
+    # group_add:
+    #   - audio
+    stdin_open: true
+    tty: true
+    command: ["/app/start.sh"]
