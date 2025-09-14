@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test-scripts:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Check script syntax
+      run: |
+        # Check bash scripts for syntax errors
+        find scripts -name "*.sh" -exec bash -n {} \;
+
+    - name: Check script permissions
+      run: |
+        # Ensure scripts are executable
+        find scripts -name "*.sh" -exec test -x {} \;
+
+    - name: Validate YAML files
+      run: |
+        # Check if YAML files are valid
+        python3 -c "import yaml; yaml.safe_load(open('config.yaml'))"
+        echo "config.yaml is valid"
+
+    - name: Check for required files
+      run: |
+        # Ensure essential files exist
+        required_files=("README.md" "config.yaml" "install.sh")
+        for file in "${required_files[@]}"; do
+          if [ ! -f "$file" ]; then
+            echo "Missing required file: $file"
+            exit 1
+          fi
+        done
+        echo "All required files are present"
