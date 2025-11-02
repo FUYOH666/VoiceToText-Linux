@@ -3,8 +3,5 @@
 ggml-*.bin
 large-v3-turbo-f16.bin
 
-# Temporary cursor files
-.cursor/
-
 # Runtime settings (generated)
 RUNTIME_SETTINGS.md
